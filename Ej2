@@ -1,0 +1,20 @@
+import RPi.GPIO as GPIO
+import time
+
+leds = [12, 10, 22, 27]
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(leds, GPIO.OUT)
+
+archivo = "cambio.txt"
+
+def read_interval():
+    with open(archivo, "r") as file:
+        interval = float(file.readline().strip())
+        return max(0.1, interval)
+
+while True:
+    interval = read_interval()
+    for led in leds:
+        GPIO.output(led, GPIO.HIGH)
+        time.sleep(interval)
+        GPIO.output(led, GPIO.LOW)
